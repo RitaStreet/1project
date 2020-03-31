@@ -1,0 +1,10 @@
+//Liubanevich Roman 9305
+//1 - chislitel; 2 - znamenatel
+
+void MUL_QQ_Q(int a1, int a2, int b1, int b2)
+{
+    int c, z;
+    
+    c = MUL_ZZ_Z(a1, b1);
+    z = MUL_ZZ_Z(a2, b2);
+}
