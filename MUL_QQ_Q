@@ -1,10 +1,12 @@
 //Liubanevich Roman 9305
-//1 - chislitel; 2 - znamenatel
+//0 - chislitel; 1 - znamenatel
 
-void MUL_QQ_Q(int a1, int a2, int b1, int b2)
+int MUL_QQ_Q(int a0, int a1, int b0, int b1)
 {
-    int c, z;
-    
-    c = MUL_ZZ_Z(a1, b1);
-    z = MUL_ZZ_Z(a2, b2);
+    int a[2];
+
+    a[0] = MUL_ZZ_Z(a0, b0);
+    a[1] = MUL_ZZ_Z(a1, b1);
+
+    return(a[0], a[1]);
 }
