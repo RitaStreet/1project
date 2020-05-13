@@ -3,9 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #define OS_TYPE linux
-#ifdef OS_TYPE
 #define maxlen 256
-#endif // OS_TYPE
 
 typedef struct numb
 {
@@ -13,27 +11,26 @@ typedef struct numb
     struct numb *next;
 }numb;
 
-void push(numb **head, int num)
+void push(numb **head, int num)//функция добавляющая элемент стека
 {
     numb *p = (numb*)malloc(sizeof(numb));
     if (p != NULL)
     {
         p -> next = *head;
         p -> num = num;
-        *head = p;
+        *head = p;//элемент становится головой, тем самым занимая первое место и сдвигая предыдущую голову вперёд на шаг
     }
     else
         puts("Error!");
 }
 
-numb *pop(numb **head)
+numb *pop(numb **head)//функция "удаляющая" элемент стека
 {
     numb *p;
     if ((*head) != NULL)
     {
         p = *head;
-        *head = (*head) -> next;
-        return p;
+        *head = (*head) -> next;//двигаем голову списка вперёд на 1
     }
     else
         puts("Error!");
@@ -42,36 +39,33 @@ numb *pop(numb **head)
 int main()
 {
     numb *head = NULL;
-    numb *p;
     FILE *df, *mf;
     char *s1;
-    int n, k, zn;
+    int k, zn;
     float aver;
     aver = 0;
-    n = 0;
     k = 0;
 
-    df = fopen("stek.txt", "r");
-    mf = fopen("res.txt", "w");
+    df = fopen("stek.txt", "r");//считываем файл из чисел которого формируется стек
+    mf = fopen("res.txt", "w");//создаём файл в который будут записаны нечётные числа
     if (df != NULL)
     {
-        n = 0;
-        while ((fgets(s1, maxlen, df)) != NULL)
+        while ((fgets(s1, maxlen, df)) != NULL)//считываем построчно каждое число
         {
-            zn = atoi(s1);
+            zn = atoi(s1);//преобразуем строку в число
             printf("%d\n", zn);
-            push(&head, zn);
+            push(&head, zn);//добавляем элемент в стек
             if (zn % 2 == 1)
             {
                 k++;
                 aver += zn;
-                fprintf(mf, "%d\n", zn);
+                fprintf(mf, "%d\n", zn);//проверяем на нечётность, и если это так то записываем число в файл
             }
 
         }
-        p = pop(&head);
+        pop(&head);//удаляем элемент стека(для проверки работы функции)
     }
-    rewind(df);
+    rewind(df);//переводим указатель для красоты
     aver = aver/k;
     printf("\nOdd average - %f", aver);
     return 0;
