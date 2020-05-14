@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define OS_TYPE linux
 #define maxlen 256
 
 typedef struct numb
