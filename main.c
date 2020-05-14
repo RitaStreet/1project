@@ -37,7 +37,7 @@ int main()
     numb *head = NULL;
     FILE *df, *mf;
     char s1[maxlen];
-    int k, zn, i;
+    int k, zn;
     float aver;
     aver = 0;
     k = 0;
@@ -63,7 +63,12 @@ int main()
         pop(&head);//удаляем элемент стека(для проверки работы функции)
     }
     rewind(df);//переводим указатель для красоты
-    aver = aver/k;
-    printf("\nOdd average - %f", aver);
+    if(aver)
+    {
+        aver = aver/k;
+        printf("\nOdd average - %f", aver);
+    }
+    else
+        puts("No odd elements!");
     return 0;
 }
