@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#define OS_TYPE linux
 #define maxlen 256
 
 typedef struct numb
@@ -35,7 +36,6 @@ int main()
 {
     numb *head = NULL;
     FILE *df, *mf;
-    char s1[maxlen];
     int k, zn;
     float aver;
     aver = 0;
@@ -46,9 +46,8 @@ int main()
     if (df != NULL)
     {
         zn = 0;
-        while ((fgets(s1, maxlen, df)) != NULL)//считываем построчно каждое число
+        while(fscanf(df, "%d", &zn) != EOF)//считываем каждое число
         {
-            zn = atoi(s1);//преобразуем строку в число
             printf("%d\n", zn);
             push(&head, zn);//добавляем элемент в стек
             if (zn % 2 == 1)
