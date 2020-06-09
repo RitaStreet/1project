@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,77 +6,89 @@
 #define OS_TYPE linux
 #define maxlen 256
 
-typedef struct stroka
+typedef struct numb
 {
-    char *str;
-    struct stroka *next;
-}stroka;
+    int cnt;
+    struct numb *next;
+}numb;
 
-stroka *push(stroka *head, char *s1, int slen)//функция добавляющая элемент стека
+typedef struct Head
 {
-    stroka *p = NULL;
-    p = (stroka*)malloc(sizeof(stroka));
-    p -> str = (char*)malloc((slen+1) * sizeof(char));
-    if (p != NULL)
-    {
-        p -> next = head;
-        strcpy(p -> str, s1);
-        head = p;//элемент становится головой, тем самым занимая первое место и сдвигая предыдущую голову вперёд на шаг
-    }
-    else
-        puts("Error!");
-    return head;
+    struct numb *first;
+}Head;
+
+numb *create_node(int num)
+{
+    numb *node = NULL;
+    node = (numb*)malloc(sizeof(numb*));
+    node -> cnt = num;
+    node -> next = NULL;
+
+    return node;
 }
 
-stroka *pop(stroka *head)//функция "удаляющая" элемент стека
+Head *make_head()
 {
-    if (head != NULL)
-        head = head -> next;//двигаем голову списка вперёд на 1
-    else
-        puts("Error!");
+    Head *ddd = NULL;
+    ddd = (Head *) malloc(sizeof(Head));
 
-    return head;
+    if (ddd != NULL)
+    {
+        ddd -> first = NULL;
+    }
+    return ddd;
 }
 
 int main()
 {
-    stroka *head = NULL;
+    Head *head = NULL;
     FILE *df, *mf;
-    int sumstr, n, i, slen, *a = NULL;
-    char s1[maxlen];
-    sumstr = 0;
+    numb *temp = NULL, *node = NULL;
+    int n, i;
 
-    df = fopen("csv.txt", "r");//считываем файл из чисел которого формируется стек
-    mf = fopen("res.txt", "w");//создаём файл в который будут записаны нечётные числа
+    df = fopen("csv.txt", "r");
+    mf = fopen("res.txt", "w");
+    head = make_head();
     if (df != NULL)
     {
+        i = 0;
         n = 0;
-        while ((fgets(s1, maxlen, df)) != NULL) n++;
-        rewind(df);
-        a = malloc(n * sizeof(int));
 
-        for (i = 0; i < n; i++)
+        while(fscanf(df, "%d", &n) != EOF)
         {
-            fgets(s1, maxlen, df);
-            slen = strlen(s1);
-            s1[slen - 1] = '\0';
-            slen = strlen(s1);
-            a[i] = slen;
-            sumstr += slen;
-            head = push(head, s1, slen);//добавляем элемент в стек
-            printf("%s\n", head -> str);
+            printf("%d\n", n);
+            temp = create_node(n);
+            if (i != 0 )
+                node -> next = temp;
+            else
+            {
+                head -> first = temp;
+            }
 
-        }
-        head = pop(head);
-        head = pop(head);//удаляем 2 элемента по заданию
-        while(head != NULL)
-        {
-            fprintf(mf, "%s\n", head -> str);
-            head = pop(head);
+            node = temp;
+            i++;
         }
     }
-    sumstr = sumstr - a[n - 1] - a[n - 2];
-    printf("Dlina strok tekushego steka = %d", sumstr);
-    rewind(df);//переводим указатель для красоты
+    else puts("File error!");
+    i = 0;
+    node = head -> first;
+    while (node != NULL)
+    {
+        if (node -> next -> cnt % 3 == 0 && i < 1)
+        {
+            temp = node -> next -> next;
+            node -> next = temp;
+            i++;
+        }
+        if (node -> next -> cnt == 5)
+        {
+            temp = create_node(25);
+            temp -> next = node -> next;
+            node -> next = temp;
+        }
+        node = node -> next;
+    }
+    //node = head -> first
+    rewind(df);
     return 0;
 }
